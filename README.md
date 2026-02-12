@@ -1,1 +1,1 @@
-"# Syntecxhub_-Project_-Name" 
+"# Syntecxhub_Project_Name" 
