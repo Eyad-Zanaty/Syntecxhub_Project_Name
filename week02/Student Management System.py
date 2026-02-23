@@ -2,57 +2,13 @@ import os
 import json
 import pandas as pd
 
-class Student:
-    def __init__(self, fileName=None):
-        
-        os.chdir(os.path.dirname(os.path.abspath(__file__)))
-        
-        self.fileName= f"{fileName}.json"
-        
-        if os.path.isfile(self.fileName) and os.access(self.fileName, os.R_OK):
-            # checks if file exists
-            print ("File exists and is readable")
-        else:
-            print ("Either file is missing or is not readable, creating file...")
-            with open(self.fileName, 'w') as db_file:
-                json.dump([], db_file)
-        
-        while True:
-            self.user_input= input('''Please select:
-1- Add
-2- Update
-3- Delete
-4- List                          
-''').strip().lower()
-            if self.user_input in ['add', 'update', 'delete', 'list']:
-                break
-            else:
-                print("Invalid input, Please try again.")
-                continue
-        
-        self.dealing_with_input(self.user_input)
-    
-    
-    def dealing_with_input(self, user_input):
 
-        while True:
-            if user_input == 'add':
-                self.add()
-            elif user_input == 'update':
-                self.update()
-            elif user_input == 'delete':
-                self.delete()
-            elif user_input == 'list':
-                self.list()
-            
-            ask_user= input("Do you want to do another operation? (y/n): ").strip().lower()
-            if ask_user == 'y':
-                Student()
-            elif ask_user == 'n':
-                print("Goodbye!")
-                break
-    
-    
+class MangementSystem: # this class is responsible for adding, updating, deleting and listing students in the system
+    def __init__(self, fileName=None):
+        self.fileName= fileName
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+
     def add(self):
         '''This function adds a student to the system'''
         
@@ -150,6 +106,63 @@ class Student:
         # using pandas to print the data in a table format
         df= pd.DataFrame(data)
         print(df)
+
+
+
+class Student: # this class is responsible for taking the user input and calling the appropriate function in the MangementSystem class
+    def __init__(self, fileName=None):
+        
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        
+        self.fileName= f"{fileName}.json"
+        
+        if os.path.isfile(self.fileName) and os.access(self.fileName, os.R_OK):
+            # checks if file exists
+            print ("File exists and is readable")
+        else:
+            print ("Either file is missing or is not readable, creating file...")
+            with open(self.fileName, 'w') as db_file:
+                json.dump([], db_file)
+        
+        while True:
+            self.user_input= input('''Please select:
+1- Add
+2- Update
+3- Delete
+4- List                          
+''').strip().lower()
+            if self.user_input in ['add', 'update', 'delete', 'list']:
+                break
+            else:
+                print("Invalid input, Please try again.")
+                continue
+        
+        self.dealing_with_input(self.user_input)
+    
+    
+    def dealing_with_input(self, user_input):
+
+        while True:
+            if user_input == 'add':
+                MangementSystem(self.fileName).add()
+            elif user_input == 'update':
+                MangementSystem(self.fileName).update()
+            elif user_input == 'delete':
+                MangementSystem(self.fileName).delete()
+            elif user_input == 'list':
+                MangementSystem(self.fileName).list()
+            
+            
+            while True:
+                ask_user= input("Do you want to do another operation? (y/n): ").strip().lower()
+                if ask_user == 'y':
+                    Student('students_grade')
+                elif ask_user == 'n':
+                    print("Goodbye!")
+                    break
+                break
+            break
+
 
 
 Student('students_grade')
